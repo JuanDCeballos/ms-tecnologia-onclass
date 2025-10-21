@@ -1,6 +1,7 @@
 package co.onclass.usecase.tecnologia;
 
-import co.onclass.model.exceptions.TecnologiaYaExisteException;
+import co.onclass.enums.ExceptionMessages;
+import co.onclass.exceptions.BusinessException;
 import co.onclass.model.tecnologia.Tecnologia;
 import co.onclass.model.tecnologia.gateways.TecnologiaRepository;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +16,7 @@ public class TecnologiaUseCase {
         return tecnologiaRepository.existePorNombre(tecnologia.getNombre())
                 .flatMap(existe -> {
                     if (Boolean.TRUE.equals(existe)) {
-                        return Mono.error(new TecnologiaYaExisteException(tecnologia.getNombre()));
+                        return Mono.error(new BusinessException(ExceptionMessages.TECNOLOGIA_YA_EXISTE));
                     }
 
                     return tecnologiaRepository.guardarTecnologia(tecnologia);

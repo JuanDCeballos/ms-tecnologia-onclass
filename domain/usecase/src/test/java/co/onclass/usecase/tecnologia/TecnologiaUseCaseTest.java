@@ -1,6 +1,6 @@
 package co.onclass.usecase.tecnologia;
 
-import co.onclass.model.exceptions.TecnologiaYaExisteException;
+import co.onclass.exceptions.BusinessException;
 import co.onclass.model.tecnologia.Tecnologia;
 import co.onclass.model.tecnologia.gateways.TecnologiaRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -57,7 +57,7 @@ class TecnologiaUseCaseTest {
         Mono<Tecnologia> respuesta = tecnologiaUseCase.guardarTecnologia(tecnologia);
 
         StepVerifier.create(respuesta)
-                .expectError(TecnologiaYaExisteException.class)
+                .expectError(BusinessException.class)
                 .verify();
 
         verify(tecnologiaRepository, times(1)).existePorNombre(anyString());
