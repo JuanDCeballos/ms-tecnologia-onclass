@@ -2,6 +2,7 @@ package co.onclass.api;
 
 import co.onclass.api.dto.ApiErrorResponse;
 import co.onclass.api.dto.ApiSuccessResponse;
+import co.onclass.api.dto.tecnologia.CapacidadTecnologiasRequestDto;
 import co.onclass.api.dto.tecnologia.TecnologiaRequestDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -16,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.ServerResponse;
 
+import static co.onclass.api.constants.ApiConstants.ASIGNAR_TECNOLOGIA;
+import static co.onclass.api.constants.ApiConstants.GUARDAR_TECNOLOGIA;
 import static org.springframework.web.reactive.function.server.RequestPredicates.POST;
 import static org.springframework.web.reactive.function.server.RouterFunctions.route;
 
@@ -25,7 +28,7 @@ public class RouterRest {
     @Bean
     @RouterOperations({
             @RouterOperation(
-                    path = "/api/v1/tecnologia",
+                    path = GUARDAR_TECNOLOGIA,
                     method = RequestMethod.POST,
                     beanClass = Handler.class,
                     beanMethod = "listenPOSTGuardarTecnologia",
@@ -50,9 +53,38 @@ public class RouterRest {
                                     )
                             }
                     )
+            ),
+            @RouterOperation(
+                    path = ASIGNAR_TECNOLOGIA,
+                    method = RequestMethod.POST,
+                    beanClass = Handler.class,
+                    beanMethod = "listenPOSTAsignarTecnologia",
+                    operation = @Operation(
+                            operationId = "asignarTecnologiaCapacidad",
+                            summary = "Asigna tecnologias a una capacidad",
+                            requestBody = @RequestBody(
+                                    required = true,
+                                    description = "Datos con la capacidad y las tecnologías a asignar",
+                                    content = @Content(schema = @Schema(implementation = CapacidadTecnologiasRequestDto.class))
+                            ),
+                            responses = {
+                                    @ApiResponse(
+                                            responseCode = "200",
+                                            description = "Tecnologías asignadas a la capacidad correctamente",
+                                            content = @Content(schema = @Schema(implementation = ApiSuccessResponse.class))
+                                    ),
+                                    @ApiResponse(
+                                            responseCode = "400",
+                                            description = "Datos inválidos para la asignación",
+                                            content = @Content(schema = @Schema(implementation = ApiErrorResponse.class))
+                                    )
+                            }
+
+                    )
             )
     })
     public RouterFunction<ServerResponse> routerFunction(Handler handler) {
-        return route(POST("/api/v1/tecnologia"), handler::listenPOSTGuardarTecnologia);
+        return route(POST(GUARDAR_TECNOLOGIA), handler::listenPOSTGuardarTecnologia)
+                .andRoute(POST(ASIGNAR_TECNOLOGIA), handler::listenPOSTAsignarTecnologia);
     }
 }
