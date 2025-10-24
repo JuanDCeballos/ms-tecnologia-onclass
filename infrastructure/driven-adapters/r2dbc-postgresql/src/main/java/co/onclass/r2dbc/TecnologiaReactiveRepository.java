@@ -5,8 +5,12 @@ import org.springframework.data.repository.query.ReactiveQueryByExampleExecutor;
 import org.springframework.data.repository.reactive.ReactiveCrudRepository;
 import reactor.core.publisher.Mono;
 
+import java.util.Collection;
+
 public interface TecnologiaReactiveRepository extends ReactiveCrudRepository<TecnologiaEntity, Long>,
         ReactiveQueryByExampleExecutor<TecnologiaEntity> {
 
     Mono<Boolean> existsByNombre(String nombre);
+
+    Mono<Long> countByIdIn(Collection<Long> ids);
 }

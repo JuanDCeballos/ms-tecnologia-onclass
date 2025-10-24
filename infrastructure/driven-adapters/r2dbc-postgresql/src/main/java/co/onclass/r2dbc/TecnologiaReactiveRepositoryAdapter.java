@@ -6,7 +6,10 @@ import co.onclass.r2dbc.entity.TecnologiaEntity;
 import co.onclass.r2dbc.helper.ReactiveAdapterOperations;
 import org.reactivecommons.utils.ObjectMapper;
 import org.springframework.stereotype.Repository;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.util.Collection;
 
 @Repository
 public class TecnologiaReactiveRepositoryAdapter extends ReactiveAdapterOperations<
@@ -27,5 +30,16 @@ public class TecnologiaReactiveRepositoryAdapter extends ReactiveAdapterOperatio
     @Override
     public Mono<Boolean> existePorNombre(String nombre) {
         return repository.existsByNombre(nombre);
+    }
+
+    @Override
+    public Mono<Long> contarTecnologiasExistentes(Collection<Long> ids) {
+        return repository.countByIdIn(ids);
+    }
+
+    @Override
+    public Flux<Tecnologia> buscarTodasPorId(Collection<Long> ids) {
+        return repository.findAllById(ids)
+                .map(this::toEntity);
     }
 }
