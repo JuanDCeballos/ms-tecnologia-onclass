@@ -15,7 +15,6 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -35,22 +34,19 @@ class CapacidadTecnologiaUseCaseTest {
     @Mock
     TecnologiaRepository tecnologiaRepository;
 
-    private Long idCapacidad = 1L;
+    private final Long idCapacidad = 1L;
 
     private Tecnologia tecnologia;
     private CapacidadTecnologia capacidadTecnologia;
 
-    private List<Tecnologia> tecnologias;
-    private List<Long> tecnologiasIds = List.of(1L, 2L, 3L);
+    private final List<Long> tecnologiasIds = List.of(1L, 2L, 3L);
 
     @BeforeEach
     void initMocks() {
-        tecnologias = new ArrayList<>();
         tecnologia = new Tecnologia();
         tecnologia.setId(1L);
         tecnologia.setNombre("JavaScript");
         tecnologia.setDescripcion("Lenguaje de la web");
-        tecnologias.add(tecnologia);
 
         capacidadTecnologia = new CapacidadTecnologia();
         capacidadTecnologia.setId(1L);
