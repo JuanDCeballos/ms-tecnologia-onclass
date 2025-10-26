@@ -17,8 +17,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.ServerResponse;
 
-import static co.onclass.api.constants.ApiConstants.ASIGNAR_TECNOLOGIA;
-import static co.onclass.api.constants.ApiConstants.GUARDAR_TECNOLOGIA;
+import static co.onclass.api.constants.ApiConstants.*;
+import static org.springframework.web.reactive.function.server.RequestPredicates.GET;
 import static org.springframework.web.reactive.function.server.RequestPredicates.POST;
 import static org.springframework.web.reactive.function.server.RouterFunctions.route;
 
@@ -85,6 +85,8 @@ public class RouterRest {
     })
     public RouterFunction<ServerResponse> routerFunction(Handler handler) {
         return route(POST(GUARDAR_TECNOLOGIA), handler::listenPOSTGuardarTecnologia)
-                .andRoute(POST(ASIGNAR_TECNOLOGIA), handler::listenPOSTAsignarTecnologia);
+                .andRoute(POST(ASIGNAR_TECNOLOGIA), handler::listenPOSTAsignarTecnologia)
+                .andRoute(GET(OBTENER_CAPACIDADES_ORDENADAS), handler::listenGETCapacidadesOrdenadas)
+                .andRoute(GET(OBTENER_TECNOLOGIAS_POR_CAPACIDADES), handler::listenGETTecnologiasPorCapacidades);
     }
 }
